@@ -8,6 +8,30 @@ Option Explicit On
 Option Strict On
 Option Compare Binary
 Public Class RentalForm
+
+    Sub ValidateInputs()
+        Dim valid As Boolean = True
+        Dim validateString As Integer
+        Dim validateAddress() As String
+        Dim validZip As Integer
+        Dim beginningMiles As Integer
+        Dim endingMiles As Integer
+        Dim errorMessage As String = ("The following information is incorrect:" & vbCrLf _
+            & vbCrLf)
+
+        'Validates that the name is not a number
+        Try
+            validateString = CInt(NameTextBox.Text)
+            valid = False
+            NameTextBox.Focus()
+            NameTextBox.BackColor = Color.LightYellow
+            errorMessage += "Name cannot contain a number"
+        Catch ex As Exception
+            NameTextBox.BackColor = Color.White
+        End Try
+
+    End Sub
+
     Private Sub NameTextBox_TextChanged(sender As Object, e As EventArgs) Handles NameTextBox.TextChanged
 
     End Sub

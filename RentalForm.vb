@@ -95,6 +95,22 @@ Public Class RentalForm
             StateTextBox.BackColor = Color.White
         End Try
 
+        'Validate that the Zip is a number
+        Try
+            validateNumber = CInt(ZipCodeTextBox.Text)
+            ZipCodeTextBox.BackColor = Color.White
+        Catch ex As Exception
+            If valid Then
+                errorMessage += "The zip code must be a number"
+                ZipCodeTextBox.Focus()
+            Else
+                errorMessage += ", the zip code must number"
+            End If
+            valid = False
+            ZipCodeTextBox.Text = ""
+            ZipCodeTextBox.BackColor = Color.LightYellow
+        End Try
+
     End Sub
 
     Private Sub NameTextBox_TextChanged(sender As Object, e As EventArgs) Handles NameTextBox.TextChanged

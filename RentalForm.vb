@@ -111,6 +111,23 @@ Public Class RentalForm
             ZipCodeTextBox.BackColor = Color.LightYellow
         End Try
 
+        'Validates that the beginning odometer reading is a number
+        Try
+            validateNumber = CInt(BeginOdometerTextBox.Text)
+            beginningMiles = CInt(BeginOdometerTextBox.Text)
+            BeginOdometerTextBox.BackColor = Color.White
+        Catch ex As Exception
+            If valid Then
+                errorMessage += "The beginning odometer miles must be a number"
+                BeginOdometerTextBox.Focus()
+            Else
+                errorMessage += ", the beginning odometer miles must number"
+            End If
+            valid = False
+            BeginOdometerTextBox.Text = ""
+            BeginOdometerTextBox.BackColor = Color.LightYellow
+        End Try
+
     End Sub
 
     Private Sub NameTextBox_TextChanged(sender As Object, e As EventArgs) Handles NameTextBox.TextChanged

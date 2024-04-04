@@ -79,6 +79,22 @@ Public Class RentalForm
             CityTextBox.BackColor = Color.White
         End Try
 
+        'Validates that the state is not a number
+        Try
+            validateString = CInt(StateTextBox.Text)
+            If valid Then
+                errorMessage += "The state cannot be a number"
+                StateTextBox.Focus()
+            Else
+                errorMessage += ", the state cannot be a number"
+            End If
+            valid = False
+            StateTextBox.Text = ""
+            StateTextBox.BackColor = Color.LightYellow
+        Catch ex As Exception
+            StateTextBox.BackColor = Color.White
+        End Try
+
     End Sub
 
     Private Sub NameTextBox_TextChanged(sender As Object, e As EventArgs) Handles NameTextBox.TextChanged

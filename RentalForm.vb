@@ -12,8 +12,8 @@ Public Class RentalForm
     Sub ValidateInputs()
         Dim valid As Boolean = True
         Dim validateString As Integer
-        Dim validateAddress() As String
-        Dim validZip As Integer
+        Dim validateAddress() As String = Split(AddressTextBox.Text, " ")
+        Dim validateNumber As Integer
         Dim beginningMiles As Integer
         Dim endingMiles As Integer
         Dim errorMessage As String = ("The following information is incorrect:" & vbCrLf _
@@ -25,9 +25,42 @@ Public Class RentalForm
             valid = False
             NameTextBox.Focus()
             NameTextBox.BackColor = Color.LightYellow
+            NameTextBox.Text = ""
             errorMessage += "Name cannot contain a number"
         Catch ex As Exception
             NameTextBox.BackColor = Color.White
+        End Try
+
+        'Validates that the address has a home number at the beginning
+        Try
+            validateNumber = CInt(validateAddress(0))
+            AddressTextBox.BackColor = Color.White
+        Catch ex As Exception
+            If valid Then
+                errorMessage += "The address must contain a home number"
+                AddressTextBox.Focus()
+            Else
+                errorMessage += ", the address must contain a home number"
+            End If
+            valid = False
+            AddressTextBox.Text = ""
+            AddressTextBox.BackColor = Color.LightYellow
+        End Try
+
+        'Validates that the address has a street name
+        Try
+            validateString = CInt(validateAddress(1))
+            If valid Then
+                errorMessage += "The address must contain a street name"
+                AddressTextBox.Focus()
+            Else
+                errorMessage += ", the address must contain a street name"
+            End If
+            valid = False
+            AddressTextBox.Text = ""
+            AddressTextBox.BackColor = Color.LightYellow
+        Catch ex As Exception
+            AddressTextBox.BackColor = Color.White
         End Try
 
     End Sub

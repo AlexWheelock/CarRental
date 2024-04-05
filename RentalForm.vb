@@ -99,6 +99,18 @@ Public Class RentalForm
         Try
             validateNumber = CInt(ZipCodeTextBox.Text)
             ZipCodeTextBox.BackColor = Color.White
+            If Len(ZipCodeTextBox.Text) < 5 Then
+                If valid Then
+                    errorMessage += "The zip code must be at least 5 digits"
+                    ZipCodeTextBox.Focus()
+                Else
+                    errorMessage += ", the zip code must be at least 5 digits"
+                End If
+                valid = False
+                ZipCodeTextBox.Text = ""
+                ZipCodeTextBox.BackColor = Color.LightYellow
+            Else
+            End If
         Catch ex As Exception
             If valid Then
                 errorMessage += "The zip code must be a number"
@@ -158,6 +170,35 @@ Public Class RentalForm
             valid = False
             EndOdometerTextBox.Text = ""
             EndOdometerTextBox.BackColor = Color.LightYellow
+        End Try
+
+        'Validates that the number of days that the customer rented the car was
+        'an integer, and at least 1
+        Try
+            validateNumber = CInt(DaysTextBox.Text)
+            If CInt(DaysTextBox.Text) > 0 Then
+                DaysTextBox.BackColor = Color.White
+            Else
+                If valid Then
+                    errorMessage += "The number of days rented must be greater than zero"
+                    DaysTextBox.Focus()
+                Else
+                    errorMessage += ", the number of days rented must be greater than zero"
+                End If
+                valid = False
+                DaysTextBox.Text = ""
+                DaysTextBox.BackColor = Color.LightYellow
+            End If
+        Catch ex As Exception
+            If valid Then
+                errorMessage += "The number of days rented must be a whole number"
+                DaysTextBox.Focus()
+            Else
+                errorMessage += ", the number of days rented must be a whole number"
+            End If
+            valid = False
+            DaysTextBox.Text = ""
+            DaysTextBox.BackColor = Color.LightYellow
         End Try
 
     End Sub

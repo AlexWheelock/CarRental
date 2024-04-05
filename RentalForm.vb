@@ -128,6 +128,38 @@ Public Class RentalForm
             BeginOdometerTextBox.BackColor = Color.LightYellow
         End Try
 
+        'Validates that the ending odometer reading is a number
+        'Also validates that the end odometer miles is greater than the beginning odometer miles
+        Try
+            validateNumber = CInt(EndOdometerTextBox.Text)
+            endingMiles = CInt(EndOdometerTextBox.Text)
+            If beginningMiles > endingMiles Then
+                If valid Then
+                    errorMessage += "The ending miles must be greater than the beginning miles"
+                    EndOdometerTextBox.Focus()
+                Else
+                    errorMessage += ", the ending miles must be greater than the beginning miles"
+                End If
+                valid = False
+                EndOdometerTextBox.Text = ""
+                EndOdometerTextBox.BackColor = Color.LightYellow
+                BeginOdometerTextBox.Text = ""
+                BeginOdometerTextBox.BackColor = Color.LightYellow
+            Else
+                EndOdometerTextBox.BackColor = Color.White
+            End If
+        Catch ex As Exception
+            If valid Then
+                errorMessage += "The ending odometer miles must be a number"
+                EndOdometerTextBox.Focus()
+            Else
+                errorMessage += ", the ending odometer miles must number"
+            End If
+            valid = False
+            EndOdometerTextBox.Text = ""
+            EndOdometerTextBox.BackColor = Color.LightYellow
+        End Try
+
     End Sub
 
     Private Sub NameTextBox_TextChanged(sender As Object, e As EventArgs) Handles NameTextBox.TextChanged

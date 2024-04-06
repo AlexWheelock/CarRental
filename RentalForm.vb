@@ -1,15 +1,17 @@
-﻿'Alex Wheelock
+﻿Option Explicit On
+Option Strict On
+Option Compare Binary
+'Alex Wheelock
 'RCET 0625
 'Car Rental
 'Spring 2024
 'https://github.com/AlexWheelock/CarRental
 
-Option Explicit On
-Option Strict On
-Option Compare Binary
+Imports System.Security.Cryptography.X509Certificates
+
 Public Class RentalForm
 
-    Sub ValidateInputs()
+    Function ValidateInputs()
         Dim valid As Boolean = True
         Dim validateString As Integer
         Dim validateAddress() As String = Split(AddressTextBox.Text, " ")
@@ -178,6 +180,16 @@ Public Class RentalForm
             validateNumber = CInt(DaysTextBox.Text)
             If CInt(DaysTextBox.Text) > 0 Then
                 DaysTextBox.BackColor = Color.White
+            ElseIf CInt(DaysTextBox.Text) > 45 Then
+                If valid Then
+                    errorMessage += "The number of days rented cannot be greater than 45"
+                    DaysTextBox.Focus()
+                Else
+                    errorMessage += ", the number of days rented cannot be greater than 45"
+                End If
+                valid = False
+                DaysTextBox.Text = ""
+                DaysTextBox.BackColor = Color.LightYellow
             Else
                 If valid Then
                     errorMessage += "The number of days rented must be greater than zero"
@@ -200,8 +212,23 @@ Public Class RentalForm
             DaysTextBox.Text = ""
             DaysTextBox.BackColor = Color.LightYellow
         End Try
+        Return valid
+    End Function
+
+    Sub DetermineCost()
+        Dim milesDriven As Double
+
+        'Determines whether or not the distance driven is in km or mi
+        'ensure that it is in miles by converting it if needed
+        If KilometersradioButton.Checked = True Then
+            milesDriven = (CInt(EndOdometerTextBox.Text) - CInt(BeginOdometerTextBox.Text)) * 0.62
+        Else
+            milesDriven = CInt(EndOdometerTextBox.Text) - CInt(BeginOdometerTextBox.Text)
+        End If
 
     End Sub
+
+    'Event Handlers below this point
 
     Private Sub NameTextBox_TextChanged(sender As Object, e As EventArgs) Handles NameTextBox.TextChanged
 

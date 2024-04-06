@@ -237,7 +237,13 @@ Public Class RentalForm
     End Function
 
     Sub DetermineCost()
-        Dim milesDriven As Double
+        Dim milesDriven As Double = 0
+        Dim additionalMiles As Double = 0
+        Dim mileageCharge As Double = 0
+        Dim dayCharge As Double = 0
+        Dim discount As Double = 1
+        Dim discountSavings As Double = 0
+        Dim total As Double = 0
 
         'Determines whether or not the distance driven is in km or mi
         'ensure that it is in miles by converting it if needed
@@ -246,6 +252,50 @@ Public Class RentalForm
         Else
             milesDriven = CInt(EndOdometerTextBox.Text) - CInt(BeginOdometerTextBox.Text)
         End If
+
+        TotalMilesTextBox.Text = $"{milesDriven} mi"
+
+        'Determines if there are any charges for additional miles and charges accordingly
+        'miles 201-500 are $0.12/mi, miles 501+ are $0.10/mi
+        additionalMiles = milesDriven - 200
+        If additionalMiles > 0 Then
+            If additionalMiles > 300 Then
+                mileageCharge = ((additionalMiles - 300) * 0.1) + (300 * 0.12)
+            Else
+            End If
+        Else
+            mileageCharge = additionalMiles * 0.12
+        End If
+
+        MileageChargeTextBox.Text = $"${mileageCharge}"
+        total += mileageCharge
+
+        'the daily fee is $15/day, added to the total and put out the the DayChargeTextBox
+        dayCharge = CInt(DaysTextBox.Text) * 15
+        DayChargeTextBox.Text = $"${dayCharge}"
+        total += dayCharge
+
+        'Checks discounts that need to be applied
+        'AAA members get 5% discount, senior citizens get 3% discount
+        'One or both may be applied at a time
+        If AAAcheckbox.Checked = True Then
+            If Seniorcheckbox.Checked = True Then
+                discount = 0.92
+            Else
+                discount = 0.95
+            End If
+        Else
+            If Seniorcheckbox.Checked = True Then
+                discount = 0.97
+            Else
+            End If
+        End If
+
+        discountSavings = total - (total * discount)
+        TotalDiscountTextBox.Text = $"${discountSavings}"
+
+        total = (total * discount)
+        TotalChargeTextBox.Text = $"${total}"
 
     End Sub
 
@@ -407,6 +457,7 @@ Public Class RentalForm
     Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
         If Validate() Then
             SummaryButton.Enabled = True
+            DetermineCost()
         Else
         End If
     End Sub

@@ -29,6 +29,11 @@ Public Class RentalForm
         DaysTextBox.Text = ""
         DaysTextBox.BackColor = Color.White
         MilesradioButton.Checked = True
+        TotalMilesTextBox.Text = ""
+        MileageChargeTextBox.Text = ""
+        DayChargeTextBox.Text = ""
+        TotalDiscountTextBox.Text = ""
+        TotalChargeTextBox.Text = ""
     End Sub
 
 
@@ -51,153 +56,221 @@ Public Class RentalForm
             NameTextBox.Text = ""
             errorMessage += "Name cannot contain a number"
         Catch ex As Exception
-            NameTextBox.BackColor = Color.White
+            If NameTextBox.Text = "" Then
+                valid = False
+                NameTextBox.Focus()
+                NameTextBox.BackColor = Color.LightYellow
+                errorMessage += "Please enter a name"
+            Else
+                NameTextBox.BackColor = Color.White
+            End If
         End Try
 
-        'Validates that the address has a home number at the beginning
-        Try
-            validateNumber = CInt(validateAddress(0))
-            AddressTextBox.BackColor = Color.White
-        Catch ex As Exception
-            If valid Then
-                errorMessage += "The address must contain a home number"
-                AddressTextBox.Focus()
-            Else
-                errorMessage += ", the address must contain a home number"
-            End If
-            valid = False
-            AddressTextBox.Text = ""
-            AddressTextBox.BackColor = Color.LightYellow
-        End Try
 
-        'Validates that the address has a street name
-        Try
-            validateString = CInt(validateAddress(1))
+        If AddressTextBox.Text = "" Then
             If valid Then
-                errorMessage += "The address must contain a street name"
+                errorMessage += "Please enter an address"
                 AddressTextBox.Focus()
             Else
-                errorMessage += ", the address must contain a street name"
+                errorMessage += ", please enter an address"
             End If
             valid = False
-            AddressTextBox.Text = ""
             AddressTextBox.BackColor = Color.LightYellow
-        Catch ex As Exception
-            AddressTextBox.BackColor = Color.White
-        End Try
+        Else
+            Try
+                validateNumber = CInt(validateAddress(0))
+                AddressTextBox.BackColor = Color.White
+            Catch ex As Exception
+                If valid Then
+                    errorMessage += "The address must contain a home number"
+                    AddressTextBox.Focus()
+                Else
+                    errorMessage += ", the address must contain a home number"
+                End If
+                valid = False
+                AddressTextBox.Text = ""
+                AddressTextBox.BackColor = Color.LightYellow
+            End Try
+        End If
 
         'Validates that the city is not a number
-        Try
-            validateString = CInt(CityTextBox.Text)
+        If CityTextBox.Text = "" Then
             If valid Then
-                errorMessage += "The city cannot be a number"
+                errorMessage += "Please enter a city"
                 CityTextBox.Focus()
             Else
-                errorMessage += ", the city cannot be a number"
+                errorMessage += ", please enter a city"
             End If
             valid = False
-            CityTextBox.Text = ""
             CityTextBox.BackColor = Color.LightYellow
-        Catch ex As Exception
-            CityTextBox.BackColor = Color.White
-        End Try
+        Else
+            Try
+                validateString = CInt(CityTextBox.Text)
+                If valid Then
+                    errorMessage += "The city cannot be a number"
+                    CityTextBox.Focus()
+                Else
+                    errorMessage += ", the city cannot be a number"
+                End If
+                valid = False
+                CityTextBox.Text = ""
+                CityTextBox.BackColor = Color.LightYellow
+            Catch ex As Exception
+                CityTextBox.BackColor = Color.White
+            End Try
+        End If
 
         'Validates that the state is not a number
-        Try
-            validateString = CInt(StateTextBox.Text)
+        If StateTextBox.Text = "" Then
             If valid Then
-                errorMessage += "The state cannot be a number"
+                errorMessage += "Please enter a state"
                 StateTextBox.Focus()
             Else
-                errorMessage += ", the state cannot be a number"
+                errorMessage += ", please enter a state"
             End If
             valid = False
-            StateTextBox.Text = ""
             StateTextBox.BackColor = Color.LightYellow
-        Catch ex As Exception
-            StateTextBox.BackColor = Color.White
-        End Try
+        Else
+            Try
+                validateString = CInt(StateTextBox.Text)
+                If valid Then
+                    errorMessage += "The state cannot be a number"
+                    StateTextBox.Focus()
+                Else
+                    errorMessage += ", the state cannot be a number"
+                End If
+                valid = False
+                StateTextBox.Text = ""
+                StateTextBox.BackColor = Color.LightYellow
+            Catch ex As Exception
+                StateTextBox.BackColor = Color.White
+            End Try
+        End If
 
         'Validate that the Zip is a number
-        Try
-            validateNumber = CInt(ZipCodeTextBox.Text)
-            ZipCodeTextBox.BackColor = Color.White
-            If Len(ZipCodeTextBox.Text) < 5 Then
+        If ZipCodeTextBox.Text = "" Then
+            If valid Then
+                errorMessage += "Please enter a zip code"
+                ZipCodeTextBox.Focus()
+            Else
+                errorMessage += ", please enter a zip code"
+            End If
+            valid = False
+            ZipCodeTextBox.BackColor = Color.LightYellow
+        Else
+            Try
+                validateNumber = CInt(ZipCodeTextBox.Text)
+                ZipCodeTextBox.BackColor = Color.White
+                If Len(ZipCodeTextBox.Text) < 5 Then
+                    If valid Then
+                        errorMessage += "The zip code must be at least 5 digits"
+                        ZipCodeTextBox.Focus()
+                    Else
+                        errorMessage += ", the zip code must be at least 5 digits"
+                    End If
+                    valid = False
+                    ZipCodeTextBox.Text = ""
+                    ZipCodeTextBox.BackColor = Color.LightYellow
+                Else
+                End If
+            Catch ex As Exception
                 If valid Then
-                    errorMessage += "The zip code must be at least 5 digits"
+                    errorMessage += "The zip code must be a number"
                     ZipCodeTextBox.Focus()
                 Else
-                    errorMessage += ", the zip code must be at least 5 digits"
+                    errorMessage += ", the zip code must be a number"
                 End If
                 valid = False
                 ZipCodeTextBox.Text = ""
                 ZipCodeTextBox.BackColor = Color.LightYellow
-            Else
-            End If
-        Catch ex As Exception
-            If valid Then
-                errorMessage += "The zip code must be a number"
-                ZipCodeTextBox.Focus()
-            Else
-                errorMessage += ", the zip code must number"
-            End If
-            valid = False
-            ZipCodeTextBox.Text = ""
-            ZipCodeTextBox.BackColor = Color.LightYellow
-        End Try
+            End Try
+        End If
 
         'Validates that the beginning odometer reading is a number
-        Try
-            validateNumber = CInt(BeginOdometerTextBox.Text)
-            beginningMiles = CInt(BeginOdometerTextBox.Text)
-            BeginOdometerTextBox.BackColor = Color.White
-        Catch ex As Exception
+        If BeginOdometerTextBox.Text = "" Then
             If valid Then
-                errorMessage += "The beginning odometer miles must be a number"
+                errorMessage += "Please enter the beginning odometer miles"
                 BeginOdometerTextBox.Focus()
             Else
-                errorMessage += ", the beginning odometer miles must number"
+                errorMessage += ", please enter the beginning odometer miles"
             End If
             valid = False
-            BeginOdometerTextBox.Text = ""
             BeginOdometerTextBox.BackColor = Color.LightYellow
-        End Try
+        Else
+            Try
+                validateNumber = CInt(BeginOdometerTextBox.Text)
+                beginningMiles = CInt(BeginOdometerTextBox.Text)
+                BeginOdometerTextBox.BackColor = Color.White
+            Catch ex As Exception
+                If valid Then
+                    errorMessage += "The beginning odometer miles must be a number"
+                    BeginOdometerTextBox.Focus()
+                Else
+                    errorMessage += ", the beginning odometer miles must be a number"
+                End If
+                valid = False
+                BeginOdometerTextBox.Text = ""
+                BeginOdometerTextBox.BackColor = Color.LightYellow
+            End Try
+        End If
 
         'Validates that the ending odometer reading is a number
         'Also validates that the end odometer miles is greater than the beginning odometer miles
-        Try
-            validateNumber = CInt(EndOdometerTextBox.Text)
-            endingMiles = CInt(EndOdometerTextBox.Text)
-            If beginningMiles > endingMiles Then
+        If EndOdometerTextBox.Text = "" Then
+            If valid Then
+                errorMessage += "Please enter the end odometer miles"
+                EndOdometerTextBox.Focus()
+            Else
+                errorMessage += ", please enter the end odometer miles"
+            End If
+            valid = False
+            EndOdometerTextBox.BackColor = Color.LightYellow
+        Else
+            Try
+                validateNumber = CInt(EndOdometerTextBox.Text)
+                endingMiles = CInt(EndOdometerTextBox.Text)
+                If beginningMiles > endingMiles Then
+                    If valid Then
+                        errorMessage += "The ending miles must be greater than the beginning miles"
+                        EndOdometerTextBox.Focus()
+                    Else
+                        errorMessage += ", the ending miles must be greater than the beginning miles"
+                    End If
+                    valid = False
+                    EndOdometerTextBox.Text = ""
+                    EndOdometerTextBox.BackColor = Color.LightYellow
+                    BeginOdometerTextBox.Text = ""
+                    BeginOdometerTextBox.BackColor = Color.LightYellow
+                Else
+                    EndOdometerTextBox.BackColor = Color.White
+                End If
+            Catch ex As Exception
                 If valid Then
-                    errorMessage += "The ending miles must be greater than the beginning miles"
+                    errorMessage += "The ending odometer miles must be a number"
                     EndOdometerTextBox.Focus()
                 Else
-                    errorMessage += ", the ending miles must be greater than the beginning miles"
+                    errorMessage += ", the ending odometer miles must be a number"
                 End If
                 valid = False
                 EndOdometerTextBox.Text = ""
                 EndOdometerTextBox.BackColor = Color.LightYellow
-                BeginOdometerTextBox.Text = ""
-                BeginOdometerTextBox.BackColor = Color.LightYellow
-            Else
-                EndOdometerTextBox.BackColor = Color.White
-            End If
-        Catch ex As Exception
-            If valid Then
-                errorMessage += "The ending odometer miles must be a number"
-                EndOdometerTextBox.Focus()
-            Else
-                errorMessage += ", the ending odometer miles must number"
-            End If
-            valid = False
-            EndOdometerTextBox.Text = ""
-            EndOdometerTextBox.BackColor = Color.LightYellow
-        End Try
+            End Try
+        End If
 
         'Validates that the number of days that the customer rented the car was
         'an integer, and at least 1
-        Try
+        If DaysTextBox.Text = "" Then
+            If valid Then
+                errorMessage += "Please enter the number of days rented"
+                DaysTextBox.Focus()
+            Else
+                errorMessage += ", please enter the number of days rented"
+            End If
+            valid = False
+            DaysTextBox.Text = ""
+            DaysTextBox.BackColor = Color.LightYellow
+        Else
+            Try
             validateNumber = CInt(DaysTextBox.Text)
             If CInt(DaysTextBox.Text) > 0 Then
                 DaysTextBox.BackColor = Color.White
@@ -233,6 +306,13 @@ Public Class RentalForm
             DaysTextBox.Text = ""
             DaysTextBox.BackColor = Color.LightYellow
         End Try
+        End If
+
+        If valid = False Then
+            MsgBox(errorMessage)
+        Else
+        End If
+
         Return valid
     End Function
 
@@ -248,9 +328,9 @@ Public Class RentalForm
         'Determines whether or not the distance driven is in km or mi
         'ensure that it is in miles by converting it if needed
         If KilometersradioButton.Checked = True Then
-            milesDriven = (CInt(EndOdometerTextBox.Text) - CInt(BeginOdometerTextBox.Text)) * 0.62
+            milesDriven = (CDbl(EndOdometerTextBox.Text) - CDbl(BeginOdometerTextBox.Text)) * 0.62
         Else
-            milesDriven = CInt(EndOdometerTextBox.Text) - CInt(BeginOdometerTextBox.Text)
+            milesDriven = CDbl(EndOdometerTextBox.Text) - CDbl(BeginOdometerTextBox.Text)
         End If
 
         TotalMilesTextBox.Text = $"{milesDriven} mi"
@@ -296,6 +376,53 @@ Public Class RentalForm
 
         total = (total * discount)
         TotalChargeTextBox.Text = $"${total}"
+
+        StoreCustomers(1)
+        StoreMiles(milesDriven)
+        StoreCharges(total)
+    End Sub
+
+    Function StoreCustomers(newCustomer As Double) As Double
+        Static storedCustomers As Double
+
+        If newCustomer = -1 Then
+        Else
+            storedCustomers += 1
+        End If
+
+        Return storedCustomers
+    End Function
+
+    Function StoreMiles(newMilesDriven As Double) As Double
+        Static storedMiles As Double
+
+        If newMilesDriven = -1 Then
+        Else
+            storedMiles += newMilesDriven
+        End If
+
+        Return storedMiles
+    End Function
+
+    Function StoreCharges(newCharges As Double) As Double
+        Static storedCharges As Double
+
+        If newCharges = -1 Then
+        Else
+            storedCharges += newCharges
+        End If
+
+        Return storedCharges
+    End Function
+
+    Sub Summary()
+        Dim totalCustomers As Double = StoreCustomers(-1)
+        Dim totalMilesDriven As Double = StoreMiles(-1)
+        Dim totalCharges As Double = StoreCharges(-1)
+
+        MessageBox.Show(($"Total Customers:          {totalCustomers}" & vbCrLf _
+               & $"Total Miles Driven:          {totalMilesDriven} mi" & vbCrLf _
+               & $"Total Charges:         ${totalCharges}"), "Detailed Summary")
 
     End Sub
 
@@ -455,7 +582,7 @@ Public Class RentalForm
     End Sub
 
     Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
-        If Validate() Then
+        If ValidateInputs() Then
             SummaryButton.Enabled = True
             DetermineCost()
         Else
@@ -467,10 +594,11 @@ Public Class RentalForm
     End Sub
 
     Private Sub SummaryButton_Click(sender As Object, e As EventArgs) Handles SummaryButton.Click
-
+        Defaults()
+        Summary()
     End Sub
 
     Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
-        Me.Close()
+        ExitForm.ShowDialog()
     End Sub
 End Class

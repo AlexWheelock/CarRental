@@ -11,7 +11,28 @@ Imports System.Security.Cryptography.X509Certificates
 
 Public Class RentalForm
 
-    Function ValidateInputs()
+    Sub Defaults()
+        NameTextBox.Text = ""
+        NameTextBox.BackColor = Color.White
+        AddressTextBox.Text = ""
+        AddressTextBox.BackColor = Color.White
+        CityTextBox.Text = ""
+        CityTextBox.BackColor = Color.White
+        StateTextBox.Text = ""
+        StateTextBox.BackColor = Color.White
+        ZipCodeTextBox.Text = ""
+        ZipCodeTextBox.BackColor = Color.White
+        BeginOdometerTextBox.Text = ""
+        BeginOdometerTextBox.BackColor = Color.White
+        EndOdometerTextBox.Text = ""
+        EndOdometerTextBox.BackColor = Color.White
+        DaysTextBox.Text = ""
+        DaysTextBox.BackColor = Color.White
+        MilesradioButton.Checked = True
+    End Sub
+
+
+    Function ValidateInputs() As Boolean
         Dim valid As Boolean = True
         Dim validateString As Integer
         Dim validateAddress() As String = Split(AddressTextBox.Text, " ")
@@ -291,7 +312,8 @@ Public Class RentalForm
     End Sub
 
     Private Sub RentalForm_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
+        Defaults()
+        SummaryButton.Enabled = False
     End Sub
 
     Private Sub CityLabel_Click(sender As Object, e As EventArgs) Handles CityLabel.Click
@@ -383,11 +405,14 @@ Public Class RentalForm
     End Sub
 
     Private Sub CalculateButton_Click(sender As Object, e As EventArgs) Handles CalculateButton.Click
-
+        If Validate() Then
+            SummaryButton.Enabled = True
+        Else
+        End If
     End Sub
 
     Private Sub ClearButton_Click(sender As Object, e As EventArgs) Handles ClearButton.Click
-
+        Defaults()
     End Sub
 
     Private Sub SummaryButton_Click(sender As Object, e As EventArgs) Handles SummaryButton.Click
@@ -395,6 +420,6 @@ Public Class RentalForm
     End Sub
 
     Private Sub ExitButton_Click(sender As Object, e As EventArgs) Handles ExitButton.Click
-
+        Me.Close()
     End Sub
 End Class

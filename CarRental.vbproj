@@ -97,12 +97,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationEvents.vb" />
-    <Compile Include="ExitForm.Designer.vb">
-      <DependentUpon>ExitForm.vb</DependentUpon>
-    </Compile>
-    <Compile Include="ExitForm.vb">
-      <SubType>Form</SubType>
-    </Compile>
     <Compile Include="RentalForm.vb">
       <SubType>Form</SubType>
     </Compile>
@@ -127,9 +121,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="ExitForm.resx">
-      <DependentUpon>ExitForm.vb</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="My Project\Resources.resx">
       <Generator>VbMyResourcesResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.vb</LastGenOutput>
